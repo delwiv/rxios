@@ -1,4 +1,4 @@
-import axios, { AxiosInstance, AxiosRequestConfig, AxiosPromise } from 'axios';
+import axios, { AxiosInstance, AxiosRequestConfig, AxiosPromise, AxiosResponse } from 'axios';
 import { Observable } from 'rxjs';
 
 export interface rxiosConfig extends AxiosRequestConfig {
@@ -34,12 +34,12 @@ class rxios {
       default:
         throw new Error('Method not supported');
     }
-    return new Observable<T>(subscriber => {
+    return new Observable<AxiosResponse<T>>(subscriber => {
       request.then(response => {
         subscriber.next(response);
         subscriber.complete();
       }).catch((err: Error) => {
-        subscriber.next(err.response);
+        subscriber.next(err as any);
         subscriber.complete();
       });
     });
